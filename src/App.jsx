@@ -50,6 +50,7 @@ const App = () => {
                   element: <EditProduct />,
                   errorElement: <ErrorPage />,
                   action: editProductAction,
+                  loader: productFormDataLoader,
                 },
                 {
                   path: "new",

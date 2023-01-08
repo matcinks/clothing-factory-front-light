@@ -13,7 +13,7 @@ import { useSubmit } from "react-router-dom";
 
 import "../util/style.css";
 
-const NewProductForm = ({ onCancel, fetchedData, product }) => {
+const ProductForm = ({ onCancel, fetchedData, product }) => {
   // STATE
   const [colours, setColours] = useState([]);
   const [sizes, setSizes] = useState([]);
@@ -40,6 +40,11 @@ const NewProductForm = ({ onCancel, fetchedData, product }) => {
     setCategories(fetchedData.categories);
     setMaterials(fetchedData.materials);
   }, []);
+
+  // INIT IF FORM IS GENERATED FOR PRODUCT EDITING
+  useEffect(() => {
+    console.log("edycja");
+  }, [product]);
 
   // HANDLERS
   const handleShowMaterialModal = () => {
@@ -198,38 +203,9 @@ const NewProductForm = ({ onCancel, fetchedData, product }) => {
     return fillMaterialsToSelectList;
   }, [materials, selectedMaterialsIds]);
 
-  // const materialAddingModal = (
-  //   <Modal
-  //     show={displayMaterialsModal}
-  //     onHide={handleCloseMaterialModal}
-  //     animation={false}
-  //   >
-  //     <Modal.Header closeButton>
-  //       <Modal.Title>Wybierz materiały</Modal.Title>
-  //     </Modal.Header>
-  //     <Modal.Body>
-  //       <Form>{fillMemoizedMaterialsToSelectList}</Form>
-  //     </Modal.Body>
-  //     <Modal.Footer>
-  //       <Button variant="secondary" onClick={handleCloseMaterialModal}>
-  //         Anuluj
-  //       </Button>
-  //       <Button variant="primary" onClick={handleSubmitSelectedMaterials}>
-  //         Dodaj
-  //       </Button>
-  //     </Modal.Footer>
-  //   </Modal>
-  // );
-  // const memoizedMaterialAddingModal = useMemo(() => {
-  //   return materialAddingModal;
-  // }, [
-  //   displayMaterialsModal,
-  //   handleCloseMaterialModal,
-  //   handleShowMaterialModal,
-  // ]);
-
   return (
     <>
+      {console.log(product)}
       <Form method="post" onSubmit={handleSubmitForm}>
         <Row>
           <Form.Group
@@ -356,12 +332,12 @@ const NewProductForm = ({ onCancel, fetchedData, product }) => {
               <br />
               <div className="d-flex justify-content-center">
                 <Button
-                  variant="primary"
+                  variant="outline-danger"
                   onClick={handleShowMaterialModal}
                   // size="lg"
-                  style={{ marginBottom: "0.55em" }}
+                  style={{ padding: "1rem 0.75rem" }}
                 >
-                  Lista materiałów
+                  Materiały
                 </Button>
               </div>
             </div>
@@ -401,12 +377,22 @@ const NewProductForm = ({ onCancel, fetchedData, product }) => {
           </Form.Group>
         </Row>
         <Row className="d-flex justify-content-center">
-          <Col className="col-top-margin col-botom-margin d-grid gap-2" xxl={2}>
+          <Col
+            className="col-top-margin col-botom-margin d-grid gap-2"
+            xs={4}
+            md={3}
+            lg={2}
+          >
             <Button variant="secondary" type="button" onClick={onCancel}>
               Anuluj
             </Button>
           </Col>
-          <Col className="col-top-margin col-botom-margin d-grid gap-2" xxl={2}>
+          <Col
+            className="col-top-margin col-botom-margin d-grid gap-2"
+            xs={4}
+            md={3}
+            lg={2}
+          >
             <Button variant="primary" type="submit">
               Dodaj
             </Button>
@@ -438,112 +424,4 @@ const NewProductForm = ({ onCancel, fetchedData, product }) => {
   );
 };
 
-export default NewProductForm;
-
-/*
-
-
-<Form method="post">
-        <label>
-          <span>Nazwa</span>
-          <input id="name" type="text" name="name" />
-        </label>
-        <label>
-          <span>Opis</span>
-          <input id="description" type="text" name="description" />
-        </label>
-        <label>
-          <span>Doadtkowe informacje</span>
-          <input
-            id="additionalInformation"
-            type="text"
-            name="additionalInformation"
-          />
-        </label>
-        <label>
-          <span>Kategoria</span>
-          <input id="category" type="text" name="category" value="BLUZKI" />
-        </label>
-
-        <fieldset>
-          <label>
-            <span>1m</span>
-            <input
-              type="checkbox"
-              name="materials"
-              value="1"
-              defaultChecked={true}
-            />
-          </label>
-          <label>
-            <span>2m</span>
-            <input type="checkbox" name="materials" value="2" />
-          </label>
-          <label>
-            <span>3m</span>
-            <input type="checkbox" name="materials" value="3" />
-          </label>
-        </fieldset>
-
-        <fieldset>
-          <label>
-            <span>1s</span>
-            <input
-              type="checkbox"
-              name="sizes"
-              value="1"
-              defaultChecked={true}
-            />
-          </label>
-          <label>
-            <span>2s</span>
-            <input type="checkbox" name="sizes" value="2" />
-          </label>
-          <label>
-            <span>3s</span>
-            <input type="checkbox" name="sizes" value="3" />
-          </label>
-        </fieldset>
-
-        <fieldset>
-          <label>
-            <span>1c</span>
-            <input
-              type="checkbox"
-              name="colours"
-              value="1"
-              defaultChecked={true}
-            />
-          </label>
-          <label>
-            <span>2c</span>
-            <input type="checkbox" name="colours" value="2" />
-          </label>
-          <label>
-            <span>3c</span>
-            <input type="checkbox" name="colours" value="3" />
-          </label>
-        </fieldset>
-
-        <label>
-          <span>Zużycie materiału</span>
-          <input
-            id="materialUsage"
-            type="number"
-            name="materialUsage"
-            value="2.5"
-          />
-        </label>
-        <label>
-          <span>jednostka zużycia materiału</span>
-          <input id="unitUsage" type="text" name="unitUsage" value="m/2szt" />
-        </label>
-
-        <button type="button" onClick={onCancel}>
-          Anuluj
-        </button>
-        <button type="submit">Dodaj produkt</button>
-      </Form>
-    </>
-
-*/
+export default ProductForm;

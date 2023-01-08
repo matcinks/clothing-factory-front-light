@@ -1,13 +1,29 @@
-import { useLocation, redirect } from "react-router-dom";
+import {
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  redirect,
+} from "react-router-dom";
 
-import EditProductForm from "../components/EditProductForm";
+import ProductForm from "../components/ProductForm";
+
 import { updateProduct } from "../util/api";
 
 const EditProduct = () => {
   const { state } = useLocation();
+  const fetchedData = useLoaderData();
+  const navigate = useNavigate();
+
+  const handleCancelForm = () => {
+    navigate("/products");
+  };
   return (
     <>
-      <EditProductForm product={state} />
+      <ProductForm
+        onCancel={handleCancelForm}
+        fetchedData={fetchedData}
+        product={state}
+      />
     </>
   );
 };

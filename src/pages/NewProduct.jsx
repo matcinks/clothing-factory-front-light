@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { useLoaderData, useNavigate, redirect } from "react-router-dom";
-import NewProductForm from "../components/NewProductForm";
+import ProductForm from "../components/ProductForm";
 import {
   getCategories,
   getColours,
@@ -16,7 +17,6 @@ const NewProduct = () => {
   // tu ponizej do zwrotki informacji z formularza
   // const data = useActionData();
   const fetchedData = useLoaderData();
-
   const navigate = useNavigate();
 
   const handleCancelForm = () => {
@@ -25,7 +25,7 @@ const NewProduct = () => {
 
   return (
     <>
-      <NewProductForm onCancel={handleCancelForm} fetchedData={fetchedData} />
+      <ProductForm onCancel={handleCancelForm} fetchedData={fetchedData} />
     </>
   );
 };
