@@ -8,24 +8,35 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-
 import { useSubmit } from "react-router-dom";
 
+import ProductFormCheckbox from "./ProductFormCheckbox";
+import ProductFormControl from "./ProductFormControl";
+import ProductFormListGroupItem from "./ProductFormListGroupItem";
+
 import "../util/style.css";
+import ProductFormModal from "./ProductFormModal";
 
 const ProductForm = ({ onCancel, fetchedData, product }) => {
   // STATE
-  const [colours, setColours] = useState([]);
-  const [sizes, setSizes] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [materials, setMaterials] = useState([]);
-
-  const [productMaterials, setProductMaterials] = useState([]);
-  const [selectedMaterialsIds, setSelectedMaterialsIds] = useState([]);
-  const [displayMaterialsModal, setDisplayMaterialsModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
 
   const [displayValidationMessage, setdisplayValidationMessage] =
     useState(false);
+
+  const [productInfo, setProductInfo] = useState({
+    id: "",
+    name: "",
+    category: "",
+    description: "",
+    additionalInformation: "",
+    colours: [],
+    sizes: [],
+    price: "",
+    materialUsage: "",
+    unitUsage: "",
+    materials: [],
+  });
 
   // SUBMIT FORM
   const submit = useSubmit();
@@ -33,47 +44,31 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
   // DESCRIPTION VALUE FOR VALIDATION
   const descriptionFormValue = useRef();
 
-  // ON INIT
-  useEffect(() => {
-    setColours(fetchedData.colours);
-    setSizes(fetchedData.sizes);
-    setCategories(fetchedData.categories);
-    setMaterials(fetchedData.materials);
-  }, []);
-
-  // INIT IF FORM IS GENERATED FOR PRODUCT EDITING
-  useEffect(() => {
-    console.log("edycja");
-  }, [product]);
-
   // HANDLERS
-  const handleShowMaterialModal = () => {
-    setDisplayMaterialsModal(true);
+  const handleShowModal = () => {
+    setDisplayModal(true);
   };
-  const handleCloseMaterialModal = () => {
-    setDisplayMaterialsModal(false);
+
+  const handleCloseModal = () => {
+    setDisplayModal(false);
   };
-  const handleSubmitSelectedMaterials = () => {
-    const selectedMaterials = [];
-    materials.map((material) => {
-      if (selectedMaterialsIds.includes(material.id))
-        selectedMaterials.push(material);
-    });
-    if (selectedMaterials !== productMaterials)
-      setProductMaterials(selectedMaterials);
-    handleCloseMaterialModal();
+
+  const formHandler = (event) => {
+    setProductInfo({ ...productInfo, [event.target.name]: event.target.value });
   };
-  const handleSelectedMaterialsChange = (e) => {
-    const selectedMaterialId = Number(e.target.value);
-    if (selectedMaterialsIds.includes(selectedMaterialId)) {
-      return setSelectedMaterialsIds(
-        selectedMaterialsIds.filter(
-          (material) => material !== selectedMaterialId
-        )
-      );
-    }
-    setSelectedMaterialsIds([...selectedMaterialsIds, selectedMaterialId]);
+
+  const handleCheckboxchange = (elementId, elementListName) => {
+    let changedIds = [];
+    productInfo[elementListName].includes(elementId)
+      ? (changedIds = productInfo[elementListName].filter(
+          (colour) => colour !== elementId
+        ))
+      : (changedIds = [...productInfo[elementListName], elementId]);
+    setProductInfo({ ...productInfo, [elementListName]: changedIds });
   };
+
+  const handleProductMaterialsChange = (newMaterials) =>
+    setProductInfo({ ...productInfo, ["materials"]: newMaterials });
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
@@ -82,84 +77,49 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
       : setdisplayValidationMessage(true);
   };
 
-  // CHECKERS
-  const isMaterialCheckboxChecked = (id) => {
-    return selectedMaterialsIds.includes(id) ? true : false;
+  // INIT IF FORM IS GENERATED FOR PRODUCT EDITING
+  useEffect(() => {
+    if (isProductPassedInParams()) loadProductData();
+  }, []);
+
+  const isProductPassedInParams = () => {
+    return product ? true : false;
   };
 
-  // CALLBACKS
-  const materialsSelectListInput = useCallback(
-    (materialId) => {
-      return (
-        <Form.Check.Input
-          type="checkbox"
-          onChange={handleSelectedMaterialsChange}
-          value={materialId}
-          checked={isMaterialCheckboxChecked(materialId)}
-        />
-      );
-    },
-    [selectedMaterialsIds]
-  );
-  const materialsSelectListLabel = useCallback(
-    (materialId, materialName, materialComposition) => {
-      let compositionSummary = "";
-      let checkForLastIndex = 0;
-      materialComposition.map((composition) => {
-        checkForLastIndex++;
-        compositionSummary +=
-          composition.percentage + "% " + composition.rawMaterial;
-        if (
-          materialComposition.length > 1 &&
-          checkForLastIndex !== materialComposition.length
-        )
-          compositionSummary += ", ";
-      });
-      return (
-        <Form.Check.Label>
-          {materialId} | {materialName} | {compositionSummary}
-        </Form.Check.Label>
-      );
-    },
-    [materials]
-  );
+  const isCheckboxInitiallyChecked = (id, listToCheck) => {
+    return listToCheck.includes(id) ? true : false;
+  };
+
+  const destructData = (propertyToDestruct) => {
+    return propertyToDestruct.map((collectionElement) => collectionElement.id);
+  };
 
   // LOADERS
-  const fillColoursCheckList = colours.map((colour) => {
-    return (
-      <Form.Check
-        key={colour.id}
-        inline
-        type="checkbox"
-        name="colours"
-        value={colour.id}
-        label={colour.name}
-        id={colour.id + "-" + colour.name}
-      />
-    );
-  });
-  const fillMemoizedColoursCheckList = useMemo(() => {
-    return fillColoursCheckList;
-  }, [colours]);
+  const loadProductData = () => {
+    // destrukturyzacja kolorow, rozmiarow i materialow do tablic z id
+    const destructedColours = destructData(product.colours);
+    const destructedSizes = destructData(product.sizes);
+    const destructedMaterials = destructData(product.materials);
 
-  const fillSizesCheckList = sizes.map((size) => {
-    return (
-      <Form.Check
-        key={size.id}
-        inline
-        type="checkbox"
-        name="sizes"
-        value={size.id}
-        label={size.name}
-        id={size.id + "-" + size.name}
-      />
-    );
-  });
-  const fillMemoizedSizesCheckList = useMemo(() => {
-    return fillSizesCheckList;
-  }, [sizes]);
+    // ustawienie danych produktu
+    setProductInfo({
+      id: product.id,
+      additionalInformation: product.additionalInformation
+        ? product.additionalInformation
+        : "",
+      category: product.category ? product.category : "",
+      colours: destructedColours ? destructedColours : [],
+      description: product.description ? product.description : "",
+      materials: destructedMaterials ? destructedMaterials : [],
+      materialUsage: product.materialUsage ? product.materialUsage : "",
+      name: product.name ? product.name : "",
+      price: product.price ? product.price : "",
+      sizes: destructedSizes ? destructedSizes : [],
+      unitUsage: product.unitUsage ? product.unitUsage : "",
+    });
+  };
 
-  const fillCategoriesSelectList = categories.map((category) => {
+  const fillCategoriesSelectList = fetchedData.categories.map((category) => {
     return (
       <option key={category} value={category}>
         {category}
@@ -168,80 +128,146 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
   });
   const fillMemoizedCategoriesSelectList = useMemo(() => {
     return fillCategoriesSelectList;
-  }, [categories]);
+  }, [fetchedData.categories]);
 
-  const fillProductMaterialsList = productMaterials.map((material) => {
-    return (
-      <ListGroup.Item key={material.id}>
-        {material.id} | {material.name} | {material.additionalDescription}
-        <Form.Control type="hidden" name="materials" value={material.id} />
-      </ListGroup.Item>
-    );
-  });
-  const fillMemoizedProductMaterialsList = useMemo(() => {
-    return fillProductMaterialsList;
-  }, [productMaterials]);
+  const fillColoursCheckbox = useMemo(
+    () =>
+      fetchedData.colours.map((colour) => (
+        <ProductFormCheckbox
+          key={colour.id}
+          checkboxElement={colour}
+          checkboxName={"colours"}
+          handleCheckboxchange={handleCheckboxchange}
+          checkboxState={isCheckboxInitiallyChecked(
+            colour.id,
+            productInfo.colours
+          )}
+        />
+      )),
+    [productInfo.colours]
+  );
 
-  const fillMaterialsToSelectList = materials.map((material) => {
-    return (
-      <Form.Check
-        type="checkbox"
-        id={material.id + "-" + material.name}
-        key={material.id + "-" + material.name}
-      >
-        {materialsSelectListInput(material.id)}
-        {materialsSelectListLabel(
-          material.id,
-          material.name,
-          material.composition
+  const fillSizesCheckbox = useMemo(
+    () =>
+      fetchedData.sizes.map((size) => (
+        <ProductFormCheckbox
+          key={size.id}
+          checkboxElement={size}
+          checkboxName={"sizes"}
+          handleCheckboxchange={handleCheckboxchange}
+          checkboxState={isCheckboxInitiallyChecked(size.id, productInfo.sizes)}
+          checkboxLabel={"Rozmiary"}
+        />
+      )),
+    [
+      fetchedData.sizes,
+      handleCheckboxchange,
+      productInfo.sizes,
+      isCheckboxInitiallyChecked,
+    ]
+  );
+
+  const materialsModal = useMemo(
+    () => (
+      <ProductFormModal
+        displayModal={displayModal}
+        handleCloseModal={handleCloseModal}
+        materials={fetchedData.materials}
+        productMaterials={productInfo.materials}
+        isCheckboxInitiallyChecked={isCheckboxInitiallyChecked}
+        handleProductMaterialsChange={handleProductMaterialsChange}
+      />
+    ),
+    [fetchedData.materials, displayModal]
+  );
+
+  const productMaterials = useMemo(() => {
+    return productInfo.materials.map((productMaterial) => (
+      <ProductFormListGroupItem
+        key={productMaterial}
+        material={fetchedData.materials.find(
+          (material) => material.id === productMaterial
         )}
-      </Form.Check>
-    );
-  });
-
-  const fillMemoizedMaterialsToSelectList = useMemo(() => {
-    return fillMaterialsToSelectList;
-  }, [materials, selectedMaterialsIds]);
+      />
+    ));
+  }, [productInfo.materials]);
 
   return (
     <>
-      {console.log(product)}
-      <Form method="post" onSubmit={handleSubmitForm}>
+      <Form
+        method={isProductPassedInParams ? "put" : "post"}
+        onSubmit={handleSubmitForm}
+      >
         <Row>
           <Form.Group
             as={Col}
-            controlId="formNewProductName"
-            xs={7}
-            sm={6}
-            lg={3}
+            controlId="formProductId"
+            xs={3} // 3 dla edycji
+            md={2}
+            lg={2}
             className="col-top-margin col-botom-margin"
           >
-            <FloatingLabel label="Nazwa">
-              <Form.Control type="text" name="name" placeholder="Nazwa" />
+            <FloatingLabel label="Nr id">
+              <Form.Control
+                type="text"
+                name="id"
+                placeholder={2}
+                value={2}
+                disabled
+                readOnly
+                onChange={() => {}}
+              />
             </FloatingLabel>
           </Form.Group>
           <Form.Group
             as={Col}
+            controlId="formProductName"
+            xs={isProductPassedInParams ? 5 : 7} // 5 dla edycji 7 dla dodawania
+            md={isProductPassedInParams ? 6 : 3}
+            lg={3}
+            className="col-top-margin col-botom-margin"
+          >
+            <ProductFormControl
+              name="name"
+              placeholder="Nazwa"
+              value={productInfo.name}
+              formHandler={formHandler}
+            />
+          </Form.Group>
+          <Form.Group
+            as={Col}
             controlId="formNewCategory"
-            xs={5}
-            sm={6}
-            lg={2}
+            xs={isProductPassedInParams ? 4 : 5} // 4 dla edycji 5 dla dodawania
+            md={isProductPassedInParams ? 4 : 3}
+            lg={
+              isProductPassedInParams
+                ? { span: 2, order: 2 }
+                : { span: 2, order: 2 }
+            }
             className="col-top-margin col-botom-margin"
           >
             <Form.Select
-              aria-label="formNewCategory"
+              aria-label="formCategory"
               className="h-100"
               name="category"
+              value={productInfo.category}
+              onChange={formHandler}
+              // defaultValue="WZORY"
             >
-              <option value="WZORY">Wybierz kategorię</option>
+              <option value="WZORY2">Wybierz kategorię</option>
               {fillMemoizedCategoriesSelectList}
             </Form.Select>
           </Form.Group>
           <Form.Group
             as={Col}
-            controlId="formNewDescription"
+            controlId="formDescription"
             xs={12}
-            lg={7}
+            md={isProductPassedInParams ? 12 : 6}
+            lg={
+              isProductPassedInParams
+                ? { span: 5, order: 1 }
+                : { span: 7, order: 1 }
+            }
             className="col-top-margin col-botom-margin"
           >
             <FloatingLabel label="Opis">
@@ -249,8 +275,10 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
                 type="text"
                 name="description"
                 placeholder="Opis"
+                value={productInfo.description}
                 ref={descriptionFormValue}
                 isInvalid={displayValidationMessage}
+                onChange={formHandler}
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 Nowy produkt musi posiadać opis!
@@ -261,7 +289,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
         <Row>
           <Form.Group
             as={Col}
-            controlId="formNewAdditionalInformation"
+            controlId="formAdditionalInformation"
             className="col-top-margin col-botom-margin"
           >
             <FloatingLabel label="Dodatkowe informacje">
@@ -270,6 +298,8 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
                 name="additionalInformation"
                 placeholder="Dodatkowe informacje"
                 className="text-area-size"
+                value={productInfo.additionalInformation}
+                onChange={formHandler}
               />
             </FloatingLabel>
           </Form.Group>
@@ -283,7 +313,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             <div className="form-control">
               <Form.Label>Kolory</Form.Label>
               <br />
-              {fillMemoizedColoursCheckList}
+              {fillColoursCheckbox}
             </div>
           </Form.Group>
         </Row>
@@ -296,7 +326,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             <div className="form-control">
               <Form.Label>Rozmiary</Form.Label>
               <br />
-              {fillMemoizedSizesCheckList}
+              {fillSizesCheckbox}
             </div>
           </Form.Group>
         </Row>
@@ -311,13 +341,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             <div className="form-control h-100">
               <Form.Label>Wybrane materiały</Form.Label>
               <br />
-              <ListGroup variant="flush">
-                {productMaterials.length ? (
-                  fillMemoizedProductMaterialsList
-                ) : (
-                  <ListGroup.Item>Nie wybrano żadnego materiału</ListGroup.Item>
-                )}
-              </ListGroup>
+              <ListGroup variant="flush">{productMaterials}</ListGroup>
             </div>
           </Form.Group>
           <Form.Group
@@ -333,7 +357,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
               <div className="d-flex justify-content-center">
                 <Button
                   variant="outline-danger"
-                  onClick={handleShowMaterialModal}
+                  onClick={handleShowModal}
                   // size="lg"
                   style={{ padding: "1rem 0.75rem" }}
                 >
@@ -360,6 +384,8 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
                       step="0.05"
                       name="materialUsage"
                       placeholder="Ilość materiału"
+                      value={productInfo.materialUsage}
+                      onChange={formHandler}
                     />
                   </FloatingLabel>
                 </Col>
@@ -369,6 +395,8 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
                       type="text"
                       name="unitUsage"
                       placeholder="Jednostka zużycia"
+                      value={productInfo.unitUsage}
+                      onChange={formHandler}
                     />
                   </FloatingLabel>
                 </Col>
@@ -394,32 +422,12 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             lg={2}
           >
             <Button variant="primary" type="submit">
-              Dodaj
+              {isProductPassedInParams ? "Zapisz" : "Dodaj"}
             </Button>
           </Col>
         </Row>
       </Form>
-
-      <Modal
-        show={displayMaterialsModal}
-        onHide={handleCloseMaterialModal}
-        animation={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Wybierz materiały</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>{fillMemoizedMaterialsToSelectList}</Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseMaterialModal}>
-            Anuluj
-          </Button>
-          <Button variant="primary" onClick={handleSubmitSelectedMaterials}>
-            {productMaterials.length ? "Zamień" : "Dodaj"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {materialsModal}
     </>
   );
 };
