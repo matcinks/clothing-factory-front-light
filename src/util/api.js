@@ -123,3 +123,14 @@ export const getMaterials = async () => {
     throw error;
   }
 };
+
+export const getProductArchive = async (id) => {
+  try {
+    const { data } = await request.get("/archive/product/" + id);
+    return data;
+  } catch (error) {
+    console.log(error);
+    // throw error.response.data;
+    throw error;
+  }
+};

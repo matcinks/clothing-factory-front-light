@@ -8,3 +8,33 @@
 .text-area-size {
     height: 150px!important;
 }
+
+h3, h5, h6 {
+    margin-bottom: 0px!important;
+}
+
+div .title, .content, .additional-content {
+    padding: 5px
+}
+
+.title {
+    border: 2px solid black;
+}
+
+.content {
+    border: 0.5px solid grey;
+    height: 100px
+}
+
+.additional-content {
+    border: 0.5px solid grey;
+    height: 352px
+}
+
+.category-title-decoration {
+    text-decoration: underline
+}
+
+.colours-list {
+    height: 200px
+}

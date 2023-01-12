@@ -6,6 +6,9 @@ import NewProduct, {
   action as newProductAction,
   loader as productFormDataLoader,
 } from "./pages/NewProduct";
+import ProductArchive, {
+  loader as productArchiveLoader,
+} from "./pages/ProductArchive";
 import ProductDetailPage, {
   loader as productDetailLoader,
 } from "./pages/ProductDetailPage";
@@ -46,16 +49,19 @@ const App = () => {
                   loader: productDetailLoader,
                 },
                 {
+                  path: ":id/archive",
+                  element: <ProductArchive />,
+                  loader: productArchiveLoader,
+                },
+                {
                   path: ":id/edit",
                   element: <EditProduct />,
-                  errorElement: <ErrorPage />,
                   action: editProductAction,
                   loader: productFormDataLoader,
                 },
                 {
                   path: "new",
                   element: <NewProduct />,
-                  errorElement: <ErrorPage />,
                   action: newProductAction,
                   loader: productFormDataLoader,
                 },

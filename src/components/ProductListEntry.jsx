@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import EditIcon from "@mui/icons-material/Edit";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 import "./ProductListEntry.css";
 
@@ -17,7 +17,7 @@ const ProductListEntry = ({ product }) => {
         {id ? (
           <Link to={"/products/" + id}>
             <Button variant="outline-dark" size="sm">
-              <EditIcon />
+              <AssignmentIcon />
             </Button>
           </Link>
         ) : (

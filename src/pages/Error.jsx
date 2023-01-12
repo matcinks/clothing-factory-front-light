@@ -13,10 +13,10 @@ const ErrorPage = () => {
   return (
     <div>
       <h2>Błąd!</h2>
-      <p>Kod: {error.response.data.errorCode}</p>
-      <p>Status: {error.response.data.httpStatus}</p>
+      <p>Kod: {error.errorCode}</p>
+      <p>Status: {error.httpStatus}</p>
       <p>
-        <b>{error.response.data.message}</b>
+        <b>{error.message}</b>
       </p>
       <button onClick={() => navigate(-1)}>Powrót</button>
     </div>

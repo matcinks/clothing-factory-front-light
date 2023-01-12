@@ -21,8 +21,10 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
   // STATE
   const [displayModal, setDisplayModal] = useState(false);
 
-  const [displayValidationMessage, setdisplayValidationMessage] =
-    useState(false);
+  const [
+    displayDescriptionValidationMessage,
+    setDisplayDescriptionValidationMessage,
+  ] = useState(false);
 
   const [productInfo, setProductInfo] = useState({
     id: "",
@@ -36,6 +38,8 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     materialUsage: "",
     unitUsage: "",
     materials: [],
+    createdAt: "",
+    version: "",
   });
 
   // SUBMIT FORM
@@ -74,7 +78,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     event.preventDefault();
     descriptionFormValue.current.value
       ? submit(event.currentTarget)
-      : setdisplayValidationMessage(true);
+      : setDisplayDescriptionValidationMessage(true);
   };
 
   // INIT IF FORM IS GENERATED FOR PRODUCT EDITING
@@ -116,15 +120,24 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
       price: product.price ? product.price : "",
       sizes: destructedSizes ? destructedSizes : [],
       unitUsage: product.unitUsage ? product.unitUsage : "",
+      createdAt: product.createdAt,
+      version: product.version,
     });
   };
 
   const fillCategoriesSelectList = fetchedData.categories.map((category) => {
-    return (
-      <option key={category} value={category}>
-        {category}
-      </option>
-    );
+    if (category !== "WZORY")
+      return (
+        <option key={category} value={category}>
+          {category}
+        </option>
+      );
+    if (!isProductPassedInParams())
+      return (
+        <option key="WZORY" value="WZORY">
+          WZORY
+        </option>
+      );
   });
   const fillMemoizedCategoriesSelectList = useMemo(() => {
     return fillCategoriesSelectList;
@@ -144,7 +157,12 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
           )}
         />
       )),
-    [productInfo.colours]
+    [
+      fetchedData.colours,
+      handleCheckboxchange,
+      productInfo.colours,
+      isCheckboxInitiallyChecked,
+    ]
   );
 
   const fillSizesCheckbox = useMemo(
@@ -192,39 +210,45 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     ));
   }, [productInfo.materials]);
 
+  const productIdFormGroup = () => {
+    if (isProductPassedInParams())
+      return (
+        <Form.Group
+          as={Col}
+          controlId="formProductId"
+          xs={3}
+          md={2}
+          lg={2}
+          className="col-top-margin col-botom-margin"
+        >
+          <FloatingLabel label="Nr id">
+            <Form.Control
+              type="text"
+              name="id"
+              placeholder={productInfo.id}
+              value={productInfo.id}
+              readOnly
+              onChange={() => {}}
+            />
+          </FloatingLabel>
+        </Form.Group>
+      );
+  };
+
   return (
     <>
       <Form
-        method={isProductPassedInParams ? "put" : "post"}
+        method={isProductPassedInParams() ? "put" : "post"}
         onSubmit={handleSubmitForm}
       >
         <Row>
-          <Form.Group
-            as={Col}
-            controlId="formProductId"
-            xs={3} // 3 dla edycji
-            md={2}
-            lg={2}
-            className="col-top-margin col-botom-margin"
-          >
-            <FloatingLabel label="Nr id">
-              <Form.Control
-                type="text"
-                name="id"
-                placeholder={2}
-                value={2}
-                disabled
-                readOnly
-                onChange={() => {}}
-              />
-            </FloatingLabel>
-          </Form.Group>
+          {productIdFormGroup()}
           <Form.Group
             as={Col}
             controlId="formProductName"
-            xs={isProductPassedInParams ? 5 : 7} // 5 dla edycji 7 dla dodawania
-            md={isProductPassedInParams ? 6 : 3}
-            lg={3}
+            xs={isProductPassedInParams() ? 4 : 7}
+            md={isProductPassedInParams() ? 6 : 3}
+            lg={isProductPassedInParams() ? 3 : 4}
             className="col-top-margin col-botom-margin"
           >
             <ProductFormControl
@@ -236,37 +260,13 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
           </Form.Group>
           <Form.Group
             as={Col}
-            controlId="formNewCategory"
-            xs={isProductPassedInParams ? 4 : 5} // 4 dla edycji 5 dla dodawania
-            md={isProductPassedInParams ? 4 : 3}
-            lg={
-              isProductPassedInParams
-                ? { span: 2, order: 2 }
-                : { span: 2, order: 2 }
-            }
-            className="col-top-margin col-botom-margin"
-          >
-            <Form.Select
-              aria-label="formCategory"
-              className="h-100"
-              name="category"
-              value={productInfo.category}
-              onChange={formHandler}
-              // defaultValue="WZORY"
-            >
-              <option value="WZORY2">Wybierz kategorię</option>
-              {fillMemoizedCategoriesSelectList}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group
-            as={Col}
             controlId="formDescription"
-            xs={12}
-            md={isProductPassedInParams ? 12 : 6}
+            xs={{ span: 12, order: 2 }}
+            md={isProductPassedInParams() ? 12 : 5}
             lg={
-              isProductPassedInParams
+              isProductPassedInParams()
                 ? { span: 5, order: 1 }
-                : { span: 7, order: 1 }
+                : { span: 6, order: 1 }
             }
             className="col-top-margin col-botom-margin"
           >
@@ -277,13 +277,34 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
                 placeholder="Opis"
                 value={productInfo.description}
                 ref={descriptionFormValue}
-                isInvalid={displayValidationMessage}
+                isInvalid={displayDescriptionValidationMessage}
                 onChange={formHandler}
               />
               <Form.Control.Feedback type="invalid" tooltip>
                 Nowy produkt musi posiadać opis!
               </Form.Control.Feedback>
             </FloatingLabel>
+          </Form.Group>
+          <Form.Group
+            as={Col}
+            controlId="formNewCategory"
+            xs={{ span: 5, order: 1 }}
+            md={isProductPassedInParams() ? 4 : 4}
+            lg={{ span: 2, order: 2 }}
+            className="col-top-margin col-botom-margin"
+          >
+            <Form.Select
+              aria-label="formCategory"
+              className="h-100"
+              name="category"
+              value={productInfo.category}
+              onChange={formHandler}
+            >
+              <option value="WZORY">
+                {isProductPassedInParams() ? "WZORY" : "Wybierz kategorię"}
+              </option>
+              {fillMemoizedCategoriesSelectList}
+            </Form.Select>
           </Form.Group>
         </Row>
         <Row>
@@ -331,78 +352,101 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
           </Form.Group>
         </Row>
         <Row>
-          <Form.Group
-            as={Col}
-            controlId="formNewMaterial"
-            className="col-top-margin col-botom-margin"
-            lg={12}
-            xl={6}
-          >
-            <div className="form-control h-100">
-              <Form.Label>Wybrane materiały</Form.Label>
-              <br />
-              <ListGroup variant="flush">{productMaterials}</ListGroup>
-            </div>
-          </Form.Group>
-          <Form.Group
-            as={Col}
-            controlId="formNewSelectMaterial"
-            className="col-top-margin col-botom-margin"
-            lg={4}
-            xl={2}
-          >
-            <div className="form-control">
-              <Form.Label>Wybierz materiał</Form.Label>
-              <br />
-              <div className="d-flex justify-content-center">
-                <Button
-                  variant="outline-danger"
-                  onClick={handleShowModal}
-                  // size="lg"
-                  style={{ padding: "1rem 0.75rem" }}
-                >
-                  Materiały
-                </Button>
-              </div>
-            </div>
-          </Form.Group>
-          <Form.Group
-            as={Col}
-            controlId="formNewMaterialUsage"
-            className="col-top-margin col-botom-margin"
-            lg={8}
-            xl={4}
-          >
-            <div className="form-control">
-              <Form.Label>Zużycie materiału</Form.Label>
-              <br />
-              <Row>
-                <Col>
-                  <FloatingLabel label="Ilość materiału">
-                    <Form.Control
-                      type="number"
-                      step="0.05"
-                      name="materialUsage"
-                      placeholder="Ilość materiału"
-                      value={productInfo.materialUsage}
-                      onChange={formHandler}
-                    />
-                  </FloatingLabel>
-                </Col>
-                <Col>
-                  <FloatingLabel label="Jednostka zużycia">
-                    <Form.Control
-                      type="text"
-                      name="unitUsage"
-                      placeholder="Jednostka zużycia"
-                      value={productInfo.unitUsage}
-                      onChange={formHandler}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-            </div>
-          </Form.Group>
+          <Col>
+            <Row className="h-100">
+              <Form.Group
+                as={Col}
+                controlId="formMaterial"
+                className="col-top-margin col-botom-margin"
+              >
+                <div className="form-control h-100">
+                  <Form.Label>Lista wybranych materiałów</Form.Label>
+                  <br />
+                  <ListGroup variant="flush">{productMaterials}</ListGroup>
+                </div>
+              </Form.Group>
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <Form.Group
+                as={Col}
+                controlId="formSelectMaterial"
+                className="col-top-margin col-botom-margin"
+                lg={4}
+                xl={3}
+              >
+                <div className="form-control" style={{ height: "100%" }}>
+                  <Form.Label>Wybór</Form.Label>
+                  <br />
+                  <div
+                    className="d-flex justify-content-center"
+                    style={{ paddingTop: "0.5em", paddingBottom: "0.5em" }}
+                  >
+                    <Button variant="outline-danger" onClick={handleShowModal}>
+                      Materiały
+                    </Button>
+                  </div>
+                </div>
+              </Form.Group>
+
+              <Form.Group
+                as={Col}
+                controlId="formMaterialUsage"
+                className="col-top-margin col-botom-margin"
+                lg={8}
+                xl={7}
+              >
+                <div className="form-control">
+                  <Form.Label>Zużycie materiału</Form.Label>
+                  <br />
+                  <Row>
+                    <Col>
+                      <FloatingLabel label="Ilość">
+                        <Form.Control
+                          type="number"
+                          step="0.05"
+                          name="materialUsage"
+                          placeholder="Ilość"
+                          value={productInfo.materialUsage}
+                          onChange={formHandler}
+                        />
+                      </FloatingLabel>
+                    </Col>
+                    <Col>
+                      <FloatingLabel label="Jednostka">
+                        <Form.Control
+                          type="text"
+                          name="unitUsage"
+                          placeholder="Jednostka"
+                          value={productInfo.unitUsage}
+                          onChange={formHandler}
+                        />
+                      </FloatingLabel>
+                    </Col>
+                  </Row>
+                </div>
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                controlId="formPrice"
+                className="col-top-margin col-botom-margin"
+                xl={2}
+              >
+                <FloatingLabel label="Cena" className="h-100">
+                  <Form.Control
+                    type="number"
+                    step="1"
+                    name="price"
+                    placeholder="Cena"
+                    value={productInfo.price}
+                    onChange={formHandler}
+                    className="h-100"
+                  />
+                </FloatingLabel>
+              </Form.Group>
+            </Row>
+          </Col>
         </Row>
         <Row className="d-flex justify-content-center">
           <Col
@@ -422,10 +466,20 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             lg={2}
           >
             <Button variant="primary" type="submit">
-              {isProductPassedInParams ? "Zapisz" : "Dodaj"}
+              {isProductPassedInParams() ? "Zapisz" : "Dodaj"}
             </Button>
           </Col>
         </Row>
+        <Form.Control
+          type="hidden"
+          name="version"
+          value={productInfo.version}
+        />
+        <Form.Control
+          type="hidden"
+          name="createdAt"
+          value={productInfo.createdAt}
+        />
       </Form>
       {materialsModal}
     </>

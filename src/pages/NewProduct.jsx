@@ -67,6 +67,7 @@ export const action = async ({ request }) => {
       colours: transformDataIntoNestedObject("colours"),
       materialUsage: formData.get("materialUsage"),
       unitUsage: formData.get("unitUsage"),
+      price: formData.get("price"),
     };
 
     const response = await saveProduct(product);
