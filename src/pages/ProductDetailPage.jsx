@@ -1,7 +1,6 @@
 import { useLoaderData } from "react-router-dom";
-import EditProductButton from "../components/EditProductButton";
 
-import Product from "../components/Product";
+import Product from "../components/product/Product";
 import { getProduct } from "../util/api";
 
 const ProductDetailPage = () => {
@@ -9,8 +8,6 @@ const ProductDetailPage = () => {
   return (
     <>
       <Product product={productData} />
-      {/* <EditProductButton id={productData.id} /> */}
-      {/* TUTAJ MUSI BYĆ LINK DO EDYCJI */}
     </>
   );
 };

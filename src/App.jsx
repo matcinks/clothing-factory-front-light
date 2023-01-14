@@ -1,5 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import ColoursLayout, {
+  action as coloursAction,
+  loader as coloursLoader,
+} from "./pages/ColoursLayout";
 import ErrorPage from "./pages/Error";
 import EditProduct, { action as editProductAction } from "./pages/EditProduct";
 import NewProduct, {
@@ -15,7 +19,10 @@ import ProductDetailPage, {
 import ProductsLayout from "./pages/ProductsLayout";
 import ProductsList from "./pages/ProductsList";
 import RootLayout from "./pages/RootLayout";
-import SizesList, { loader as sizesLoader } from "./pages/SizesList";
+import SizesLayout, {
+  action as sizesAction,
+  loader as sizesLoader,
+} from "./pages/SizesLayout";
 import WelcomePage from "./pages/Welcome";
 
 import { ProductContextProvider } from "./store/product-context";
@@ -65,12 +72,21 @@ const App = () => {
                   action: newProductAction,
                   loader: productFormDataLoader,
                 },
-                {
-                  path: "sizes",
-                  element: <SizesList />,
-                  loader: sizesLoader,
-                },
               ],
+            },
+            {
+              path: "sizes",
+              element: <SizesLayout />,
+              errorElement: <ErrorPage />,
+              loader: sizesLoader,
+              action: sizesAction,
+            },
+            {
+              path: "colours",
+              element: <ColoursLayout />,
+              errorElement: <ErrorPage />,
+              loader: coloursLoader,
+              action: coloursAction,
             },
           ],
         },

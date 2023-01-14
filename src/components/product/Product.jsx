@@ -3,7 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import "../util/style.css";
+import "../../util/style.css";
 
 const Product = ({ product }) => {
   // console.log(product);

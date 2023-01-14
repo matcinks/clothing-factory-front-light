@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 
-import ProductContext from "../store/product-context";
+import ProductContext from "../../store/product-context";
 
 const ProductsSearch = () => {
   const [insertedQuery, setInsertedQuery] = useState("");

@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { useLoaderData, useNavigate, redirect } from "react-router-dom";
-import ProductForm from "../components/ProductForm";
+import ProductForm from "../components/product/ProductForm";
 import {
   getCategories,
   getColours,

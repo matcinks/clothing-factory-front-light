@@ -5,7 +5,7 @@ import {
   redirect,
 } from "react-router-dom";
 
-import ProductForm from "../components/ProductForm";
+import ProductForm from "../components/product/ProductForm";
 
 import { updateProduct } from "../util/api";
 

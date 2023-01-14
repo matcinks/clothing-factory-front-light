@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   Col,
   FloatingLabel,
   Form,
   ListGroup,
-  Modal,
   Row,
 } from "react-bootstrap";
 import { useSubmit } from "react-router-dom";
@@ -13,9 +12,9 @@ import { useSubmit } from "react-router-dom";
 import ProductFormCheckbox from "./ProductFormCheckbox";
 import ProductFormControl from "./ProductFormControl";
 import ProductFormListGroupItem from "./ProductFormListGroupItem";
-
-import "../util/style.css";
 import ProductFormModal from "./ProductFormModal";
+
+import "../../util/style.css";
 
 const ProductForm = ({ onCancel, fetchedData, product }) => {
   // STATE
@@ -75,6 +74,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     setProductInfo({ ...productInfo, ["materials"]: newMaterials });
 
   const handleSubmitForm = (event) => {
+    console.log(event.currentTarget);
     event.preventDefault();
     descriptionFormValue.current.value
       ? submit(event.currentTarget)

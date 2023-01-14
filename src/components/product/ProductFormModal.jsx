@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useMemo, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import _ from "lodash";
 
 import ProductFormModalCheckbox from "./ProductFormModalCheckbox";
 

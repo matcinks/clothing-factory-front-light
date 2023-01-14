@@ -1,6 +1,6 @@
 import { Col, Row, Table } from "react-bootstrap";
 
-import "../util/style.css";
+import "../../util/style.css";
 
 const ProductArchiveTable = ({ archiveData }) => {
   const fillTable = () =>
@@ -14,7 +14,7 @@ const ProductArchiveTable = ({ archiveData }) => {
           <td>{archive.propertyName}</td>
           <td>{archive.valueBefore ? archive.valueBefore : "-"}</td>
           <td>{archive.valueAfter}</td>
-          <td>{archive.createdAt}</td>
+          <td>{new Date(archive.changeDate).toLocaleDateString()}</td>
           <td>{archive.user}</td>
         </tr>
       ))

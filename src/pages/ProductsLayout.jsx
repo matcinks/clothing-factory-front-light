@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import ProductsNavMenu from "../components/ProductsNavMenu";
+import ProductsNavMenu from "../components/product/ProductsNavMenu";
 
 const ProductsLayout = () => {
   return (

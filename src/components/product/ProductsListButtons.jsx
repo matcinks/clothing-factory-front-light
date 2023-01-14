@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ProductsFilter from "./ProductsFilter";
 import ProductsSearch from "./ProductsSearch";
 
-import "../util/style.css";
+import "../../util/style.css";
 
 const ProductsListButtons = () => {
   return (

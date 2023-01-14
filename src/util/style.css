@@ -38,3 +38,7 @@ div .title, .content, .additional-content {
 .colours-list {
     height: 200px
 }
+
+th {
+    text-align: center!important
+}

@@ -1,8 +1,9 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 
-import { getCategories } from "../util/api";
-import ProductContext from "../store/product-context";
+import { getCategories } from "../../util/api";
+
+import ProductContext from "../../store/product-context";
 
 const ProductsFilter = () => {
   const [categories, setCategories] = useState([]);

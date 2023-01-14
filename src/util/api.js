@@ -14,12 +14,46 @@ export const getSizes = async () => {
   }
 };
 
+export const updateSize = async (size) => {
+  try {
+    const { data, status } = await request.put("/size/" + size.id, size);
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const saveSize = async (size) => {
+  try {
+    const { data, status } = await request.post("/size", size);
+    // return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getColours = async () => {
   try {
     const { data } = await request.get("/colour");
     return data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updateColour = async (colour) => {
+  try {
+    const { data, status } = await request.put("/colour/" + colour.id, colour);
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const saveColour = async (colour) => {
+  try {
+    const { data, status } = await request.post("/colour", colour);
+    // return data;
+  } catch (error) {
+    throw error;
   }
 };
 

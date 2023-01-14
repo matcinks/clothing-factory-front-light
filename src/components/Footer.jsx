@@ -1,6 +1,11 @@
+import { Col, Row } from "react-bootstrap";
 const Footer = () => {
   console.log("Footer rendering");
-  return <div>Footer component</div>;
+  return (
+    <Row>
+      <Col className="d-flex justify-content-end">©2023</Col>
+    </Row>
+  );
 };
 
 export default Footer;

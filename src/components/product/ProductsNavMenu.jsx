@@ -5,7 +5,7 @@ const ProductsNavMenu = () => {
   return (
     <Row>
       <Col>
-        <Nav variant="tabs" defaultActiveKey="/products">
+        <Nav variant="tabs">
           <Nav.Item>
             <Nav.Link as={Link} to="/products" eventKey="/products">
               Produkty
@@ -17,30 +17,22 @@ const ProductsNavMenu = () => {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="/sizes" href="/sizes">
+            <Nav.Link as={Link} to="/products/sizes" eventKey="/products/sizes">
               Rozmiary
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="/colours" href="/colours">
+            <Nav.Link
+              as={Link}
+              to="/products/colours"
+              eventKey="/products/colours"
+            >
               Kolory
             </Nav.Link>
           </Nav.Item>
         </Nav>
       </Col>
     </Row>
-
-    //TODO usunąć póżniej
-    // poprzednia nazwa pliku NewProductButton
-    // zmieniono na ogólne menu zakładki produktu
-
-    // <div>
-    //   <Link to="/products/new">
-    //     <Button variant="outline-dark" size="sm">
-    //       Dodaj produkt
-    //     </Button>
-    //   </Link>
-    // </div>
   );
 };
 

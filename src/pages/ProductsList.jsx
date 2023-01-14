@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 
-import Products from "../components/Products";
-import ProductsListButtons from "../components/ProductsListButtons";
+import Products from "../components/product/Products";
+import ProductsListButtons from "../components/product/ProductsListButtons";
 import ProductContext from "../store/product-context";
 
 import {
