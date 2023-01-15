@@ -12,7 +12,11 @@ const ProductsNavMenu = () => {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="/materials" href="/materials">
+            <Nav.Link
+              as={Link}
+              to="/products/materials"
+              eventKey="/products/materials"
+            >
               Materiały
             </Nav.Link>
           </Nav.Item>

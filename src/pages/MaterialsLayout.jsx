@@ -1,5 +1,7 @@
+import { Outlet } from "react-router-dom";
+
 const MaterialsLayout = () => {
-  return <div>Materials</div>;
+  return <Outlet />;
 };
 
 export default MaterialsLayout;

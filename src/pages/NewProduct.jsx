@@ -43,7 +43,6 @@ export const loader = async () => {
     materials: materials,
   };
   return returnedData;
-  // return getColours();
 };
 
 export const action = async ({ request }) => {
@@ -73,10 +72,6 @@ export const action = async ({ request }) => {
   } catch (err) {
     throw err;
   }
-  // tu ponizej przygotowane zabezpieczenie do przekazanie bledu walidacji formularza
-  // if (response) {
-  //   return response;
-  // }
 
   return redirect("/products");
 };

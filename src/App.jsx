@@ -5,7 +5,19 @@ import ColoursLayout, {
   loader as coloursLoader,
 } from "./pages/ColoursLayout";
 import ErrorPage from "./pages/Error";
+import EditMaterial, {
+  action as editMaterialAction,
+  loader as editMaterialFormDataLoader,
+} from "./pages/EditMaterial";
 import EditProduct, { action as editProductAction } from "./pages/EditProduct";
+import MaterialsLayout from "./pages/MaterialsLayout";
+import MaterialsList, {
+  loader as materialsLoader,
+} from "./pages/MaterialsList";
+import NewMaterial, {
+  action as newMaterialAction,
+  loader as materialFormDataLoader,
+} from "./pages/NewMaterial";
 import NewProduct, {
   action as newProductAction,
   loader as productFormDataLoader,
@@ -87,6 +99,31 @@ const App = () => {
               errorElement: <ErrorPage />,
               loader: coloursLoader,
               action: coloursAction,
+            },
+            {
+              path: "materials",
+              element: <MaterialsLayout />,
+              errorElement: <ErrorPage />,
+
+              children: [
+                {
+                  index: true,
+                  element: <MaterialsList />,
+                  loader: materialsLoader,
+                },
+                {
+                  path: "new",
+                  element: <NewMaterial />,
+                  action: newMaterialAction,
+                  loader: materialFormDataLoader,
+                },
+                {
+                  path: ":id/edit",
+                  element: <EditMaterial />,
+                  loader: editMaterialFormDataLoader,
+                  action: editMaterialAction,
+                },
+              ],
             },
           ],
         },

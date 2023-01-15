@@ -74,7 +74,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     setProductInfo({ ...productInfo, ["materials"]: newMaterials });
 
   const handleSubmitForm = (event) => {
-    console.log(event.currentTarget);
+    // console.log(event.currentTarget);
     event.preventDefault();
     descriptionFormValue.current.value
       ? submit(event.currentTarget)
@@ -218,7 +218,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
           controlId="formProductId"
           xs={3}
           md={2}
-          lg={2}
+          lg={1}
           className="col-top-margin col-botom-margin"
         >
           <FloatingLabel label="Nr id">
@@ -248,7 +248,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             controlId="formProductName"
             xs={isProductPassedInParams() ? 4 : 7}
             md={isProductPassedInParams() ? 6 : 3}
-            lg={isProductPassedInParams() ? 3 : 4}
+            lg={isProductPassedInParams() ? 4 : 3}
             className="col-top-margin col-botom-margin"
           >
             <ProductFormControl
@@ -290,7 +290,11 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             controlId="formNewCategory"
             xs={{ span: 5, order: 1 }}
             md={isProductPassedInParams() ? 4 : 4}
-            lg={{ span: 2, order: 2 }}
+            lg={
+              isProductPassedInParams()
+                ? { span: 2, order: 2 }
+                : { span: 3, order: 2 }
+            }
             className="col-top-margin col-botom-margin"
           >
             <Form.Select
@@ -448,7 +452,7 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
             </Row>
           </Col>
         </Row>
-        <Row className="d-flex justify-content-center">
+        <Row className="d-flex justify-content-end">
           <Col
             className="col-top-margin col-botom-margin d-grid gap-2"
             xs={4}

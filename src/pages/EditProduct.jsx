@@ -17,6 +17,7 @@ const EditProduct = () => {
   const handleCancelForm = () => {
     navigate(-1);
   };
+
   return (
     <>
       <ProductForm
@@ -43,7 +44,6 @@ export const action = async ({ request }) => {
     // tworzenie obiektu produktu do przekazania w żądaniu PUT
     const product = {
       id: formData.get("id"),
-      version: formData.get("version"),
       name: formData.get("name"),
       description: formData.get("description"),
       additionalInformation: formData.get("additionalInformation"),

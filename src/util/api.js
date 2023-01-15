@@ -158,6 +158,44 @@ export const getMaterials = async () => {
   }
 };
 
+export const getMaterial = async (id) => {
+  try {
+    const { data } = await request.get("/material/" + id);
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getRawMaterials = async () => {
+  try {
+    const { data } = await request.get("/material/rawmaterial");
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const saveMaterial = async (material) => {
+  try {
+    const { data, status } = await request.post("/material", material);
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const updateMaterial = async (material) => {
+  try {
+    const { data, status } = await request.put("/material", material);
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export const getProductArchive = async (id) => {
   try {
     const { data } = await request.get("/archive/product/" + id);
