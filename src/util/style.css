@@ -42,3 +42,17 @@ div .title, .content, .additional-content {
 th {
     text-align: center!important
 }
+
+.date-picker input {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    text-align: center;
+}
+
+.inactiveLink {
+    cursor: default
+}
+
+.inactiveLink:hover {
+    color: var(--bs-link-color);
+}

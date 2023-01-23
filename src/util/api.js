@@ -206,3 +206,97 @@ export const getProductArchive = async (id) => {
     throw error;
   }
 };
+
+export const getSeamstresses = async () => {
+  try {
+    const { data } = await request.get("/seamstress");
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateSeamstress = async (seamstress) => {
+  try {
+    const { data, status } = await request.put(
+      "/seamstress/" + seamstress.id,
+      seamstress
+    );
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const saveSeamstress = async (seamstress) => {
+  try {
+    const { data, status } = await request.post("/seamstress", seamstress);
+    // return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getAllSewing = async () => {
+  try {
+    const { data } = await request.get("/sewing");
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getAllSewingByDate = async (date) => {
+  try {
+    const { data } = await request.get("/sewing/" + date);
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const updateSewingStatus = async (id, newStatus) => {
+  try {
+    const { data, status } = await request.put("/sewing/" + id, newStatus, {
+      headers: {
+        "Content-Type": "text/plain",
+      },
+    });
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const saveSewing = async (schedule) => {
+  console.log(schedule);
+  try {
+    const { data, status } = await request.post("/sewing", schedule);
+    // return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateSewing = async (updatedSchedule) => {
+  try {
+    const { data, status } = await request.put("/sewing", updatedSchedule);
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const getProductMaterials = async (id) => {
+  try {
+    const { data } = await request.get("/product/" + id + "/materials");
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

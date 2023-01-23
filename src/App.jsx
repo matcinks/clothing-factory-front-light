@@ -10,6 +10,10 @@ import EditMaterial, {
   loader as editMaterialFormDataLoader,
 } from "./pages/EditMaterial";
 import EditProduct, { action as editProductAction } from "./pages/EditProduct";
+import EditSchedule, {
+  action as editScheduleFormAction,
+  loader as editScheduleFormDataLoader,
+} from "./pages/EditSchedule";
 import MaterialsLayout from "./pages/MaterialsLayout";
 import MaterialsList, {
   loader as materialsLoader,
@@ -22,6 +26,10 @@ import NewProduct, {
   action as newProductAction,
   loader as productFormDataLoader,
 } from "./pages/NewProduct";
+import NewSchedule, {
+  action as newScheduleFormAction,
+  loader as newScheduleFormDataLoader,
+} from "./pages/NewSchedule";
 import ProductArchive, {
   loader as productArchiveLoader,
 } from "./pages/ProductArchive";
@@ -30,7 +38,16 @@ import ProductDetailPage, {
 } from "./pages/ProductDetailPage";
 import ProductsLayout from "./pages/ProductsLayout";
 import ProductsList from "./pages/ProductsList";
+import ProductionLayout from "./pages/ProductionLayout";
 import RootLayout from "./pages/RootLayout";
+import SeamstressesLayout, {
+  action as seamstressesAction,
+  loader as seamstressesDataLoader,
+} from "./pages/SeamstressesLayout";
+import SewingLayout, {
+  action as sewingUpdateStatusAction,
+  loader as sewingDataLoader,
+} from "./pages/SewingLayout";
 import SizesLayout, {
   action as sizesAction,
   loader as sizesLoader,
@@ -124,6 +141,37 @@ const App = () => {
                   action: editMaterialAction,
                 },
               ],
+            },
+          ],
+        },
+        {
+          path: "production",
+          element: <ProductionLayout />,
+          errorElement: <ErrorPage />,
+          children: [
+            {
+              path: "sewing/:date",
+              element: <SewingLayout />,
+              loader: sewingDataLoader,
+              action: sewingUpdateStatusAction,
+            },
+            {
+              path: "sewing/seamstresses",
+              element: <SeamstressesLayout />,
+              action: seamstressesAction,
+              loader: seamstressesDataLoader,
+            },
+            {
+              path: "sewing/new",
+              element: <NewSchedule />,
+              action: newScheduleFormAction,
+              loader: newScheduleFormDataLoader,
+            },
+            {
+              path: "sewing/:id/edit",
+              element: <EditSchedule />,
+              action: editScheduleFormAction,
+              loader: editScheduleFormDataLoader,
             },
           ],
         },

@@ -42,11 +42,6 @@ const MaterialForm = ({ rawMaterials, onCancel, materialToEdit }) => {
   const updateComposition = (composition) =>
     setMaterial({ ...material, composition: composition });
 
-  // TESTY DO WYSWIETLANIA ZMIAN
-  // useEffect(() => console.log(material), [material]);
-  // useEffect(() => console.log(composition), [composition]);
-  //
-
   // zrobic useCallback zeby sie wywolywalo tylko jesli zmieni sie material podany
   const materialFormId = () => {
     if (material.id)
@@ -149,56 +144,6 @@ const MaterialForm = ({ rawMaterials, onCancel, materialToEdit }) => {
             </Button>
           </Col>
         </Row>
-        {/* <Row>
-        <Col className="col-top-margin col-bottom-margin">
-          <div className="form-control">
-            <Form.Label>Skład</Form.Label>
-            <br />
-            Lista dostępnych
-          </div>
-        </Col>
-        <Col
-          className="col-top-margin col-bottom-margin"
-          xl={isAddingCompositionActive ? 3 : 2}
-        >
-          {isAddingCompositionActive ? (
-            "komponent"
-          ) : (
-            <div className="form-control">
-              <Form.Label>Nowy skład</Form.Label>
-              <br />
-              <Button
-                variant="warning"
-                style={{ marginLeft: "3em" }}
-                onClick={() =>
-                  setIsAddingCompositionActive(!isAddingCompositionActive)
-                }
-              >
-                <AddIcon />
-              </Button>
-            </div>
-          )}
-        </Col>
-        <Col className="col-top-margin col-bottom-margin" xl={2}>
-          <div className="form-control h-100">
-            <Row>
-              <Form.Label>Zapis</Form.Label>
-              <br />
-
-              <Col>
-                <Button variant="danger" onClick={() => console.log("go back")}>
-                  <ClearIcon />
-                </Button>
-              </Col>
-              <Col>
-                <Button variant="success" onClick={() => console.log("submit")}>
-                  <CheckIcon />
-                </Button>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-      </Row> */}
       </Container>
     </Form>
   );

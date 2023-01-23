@@ -1,0 +1,17 @@
+a.link-colour {
+   text-decoration: none; 
+   color: var(--bs-body-color);
+
+}
+
+a.link-colour:hover {
+    color: var(--bs-link-color);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+.schedule-status, .schedule-status:hover {
+    color: #9c0000!important;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
