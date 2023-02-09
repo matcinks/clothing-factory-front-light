@@ -5,20 +5,19 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const RootLayout = () => {
-  console.log("Root Layout rendering");
   return (
     <Container>
-      <Row>
+      <Row className="row-header">
         <Col>
           <Header />
         </Col>
       </Row>
-      <Row>
+      <Row className="row-content">
         <Col>
           <Outlet />
         </Col>
       </Row>
-      <Row>
+      <Row className="row-footer">
         <Col>
           <Footer />
         </Col>

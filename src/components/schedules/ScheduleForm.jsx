@@ -35,7 +35,7 @@ const ScheduleForm = ({ fetchedData, schedule }) => {
   });
 
   const [isValid, setIsValid] = useState({
-    seamstresses: false,
+    seamstressId: false,
     amount: false,
     sizeId: false,
     colourId: false,
@@ -77,6 +77,7 @@ const ScheduleForm = ({ fetchedData, schedule }) => {
         setProductMaterials(fetchedData.materials);
       } catch (error) {
         console.log(error);
+        // throw error;
       }
     };
     if (scheduleData.productId) fetchData();
@@ -86,9 +87,9 @@ const ScheduleForm = ({ fetchedData, schedule }) => {
     if (schedule) setScheduleData(schedule);
   }, []);
 
-  useEffect(() => {
-    console.log("scheduleData: ", scheduleData);
-  }, [scheduleData]);
+  // useEffect(() => {
+  //   console.log("scheduleData: ", scheduleData);
+  // }, [scheduleData]);
 
   const handleValidation = () => {
     const isCurrentValid = { ...isValid };
@@ -246,7 +247,7 @@ const ScheduleForm = ({ fetchedData, schedule }) => {
             <ScheduleFormSelect
               list={fetchedData.seamstresses}
               selectFormValue={selectFormValue}
-              isValid={isValid.seamstresses}
+              isValid={isValid.seamstressId}
               selectName="seamstressId"
               formHandler={formSelectHandler}
               selectedValue={scheduleData.seamstressId}

@@ -1,3 +1,22 @@
+.row-header {
+    min-height: 7vh;
+}
+
+.row-content{
+    min-height: 88vh;
+}
+
+.row-footer {
+    min-height: 3vh;
+}
+
+
+.welcome {
+    padding: 50px;
+    text-align: center;
+}
+
+
 .col-top-margin {
     margin-top: 10px!important;
 }
