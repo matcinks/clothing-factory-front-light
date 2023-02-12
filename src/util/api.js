@@ -1,9 +1,25 @@
 import axios from "axios";
 
+const loginRequest = axios.create({
+  baseURL: "http://localhost:8080",
+});
+
 const request = axios.create({
   baseURL: "http://localhost:8080",
-  // validateStatus: false,
+  headers: {
+    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    "Content-Type": "application/json",
+  },
 });
+
+export const login = async (userData) => {
+  try {
+    const { data } = await loginRequest.post("/auth/login", userData);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getSizes = async () => {
   try {

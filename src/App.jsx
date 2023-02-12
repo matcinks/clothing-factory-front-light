@@ -39,7 +39,7 @@ import ProductDetailPage, {
 import ProductsLayout from "./pages/ProductsLayout";
 import ProductsList from "./pages/ProductsList";
 import ProductionLayout from "./pages/ProductionLayout";
-import RootLayout from "./pages/RootLayout";
+import RootLayout, { action as loginAction } from "./pages/RootLayout";
 import SeamstressesLayout, {
   action as seamstressesAction,
   loader as seamstressesDataLoader,
@@ -62,6 +62,7 @@ const App = () => {
       path: "/",
       element: <RootLayout />,
       errorElement: <ErrorPage />,
+      action: loginAction,
       children: [
         {
           index: true,

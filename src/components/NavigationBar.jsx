@@ -18,7 +18,10 @@ const NavigationBar = () => {
             </Nav.Link>
           </Nav>
           <Navbar.Text as={Col} xl={{ span: 2, offset: 8 }}>
-            Zalogowany: <a href="#login">Test User</a>
+            Zalogowany:
+            <span style={{ color: "white" }}>
+              {" " + sessionStorage.getItem("role")}
+            </span>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

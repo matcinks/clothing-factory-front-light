@@ -22,7 +22,6 @@ export const loader = () => {
 };
 
 export const action = async ({ request }) => {
-  console.log(request);
   try {
     const formData = await request.formData();
 
