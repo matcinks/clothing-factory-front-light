@@ -2,9 +2,6 @@ import { Col, Table, Row } from "react-bootstrap";
 
 import ProductListEntry from "./ProductListEntry";
 
-// do tego komponentu przekazana jest lista wszystkich produktów
-// dalej do pojedynczego wpisu (wiersza) przekazywany jest pojedynczy produkt
-
 const Products = ({ productsList }) => {
   const displayProducts =
     productsList.length < 1 ? (

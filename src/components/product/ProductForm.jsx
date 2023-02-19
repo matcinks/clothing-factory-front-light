@@ -17,7 +17,6 @@ import ProductFormModal from "./ProductFormModal";
 import "../../util/style.css";
 
 const ProductForm = ({ onCancel, fetchedData, product }) => {
-  // STATE
   const [displayModal, setDisplayModal] = useState(false);
 
   const [
@@ -41,13 +40,10 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     version: "",
   });
 
-  // SUBMIT FORM
   const submit = useSubmit();
 
-  // DESCRIPTION VALUE FOR VALIDATION
   const descriptionFormValue = useRef();
 
-  // HANDLERS
   const handleShowModal = () => {
     setDisplayModal(true);
   };
@@ -74,14 +70,12 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     setProductInfo({ ...productInfo, ["materials"]: newMaterials });
 
   const handleSubmitForm = (event) => {
-    // console.log(event.currentTarget);
     event.preventDefault();
     descriptionFormValue.current.value
       ? submit(event.currentTarget)
       : setDisplayDescriptionValidationMessage(true);
   };
 
-  // INIT IF FORM IS GENERATED FOR PRODUCT EDITING
   useEffect(() => {
     if (isProductPassedInParams()) loadProductData();
   }, []);
@@ -98,14 +92,11 @@ const ProductForm = ({ onCancel, fetchedData, product }) => {
     return propertyToDestruct.map((collectionElement) => collectionElement.id);
   };
 
-  // LOADERS
   const loadProductData = () => {
-    // destrukturyzacja kolorow, rozmiarow i materialow do tablic z id
     const destructedColours = destructData(product.colours);
     const destructedSizes = destructData(product.sizes);
     const destructedMaterials = destructData(product.materials);
 
-    // ustawienie danych produktu
     setProductInfo({
       id: product.id,
       additionalInformation: product.additionalInformation

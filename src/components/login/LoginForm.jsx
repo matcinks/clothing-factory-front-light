@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import {
   Alert,
@@ -15,7 +15,6 @@ import { Form } from "react-router-dom";
 
 import "./LoginForm.css";
 
-// TODO dolozyc useSubmit i przesylanie formularza recznie, dodatkowe czyszczenie pol username i password po submicie
 const LoginForm = ({ error }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -58,7 +57,6 @@ const LoginForm = ({ error }) => {
                     value={username}
                     onChange={handleChange}
                     placeholder="label"
-                    // ref={usernameInput}
                   />
                 </FloatingLabel>
               </Col>
@@ -72,7 +70,6 @@ const LoginForm = ({ error }) => {
                     value={password}
                     onChange={handleChange}
                     type="password"
-                    // ref={passwordInput}
                   />
                 </FloatingLabel>
               </Col>

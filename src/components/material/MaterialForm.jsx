@@ -42,7 +42,6 @@ const MaterialForm = ({ rawMaterials, onCancel, materialToEdit }) => {
   const updateComposition = (composition) =>
     setMaterial({ ...material, composition: composition });
 
-  // zrobic useCallback zeby sie wywolywalo tylko jesli zmieni sie material podany
   const materialFormId = () => {
     if (material.id)
       return (

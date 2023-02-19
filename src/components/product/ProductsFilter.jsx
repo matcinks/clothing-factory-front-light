@@ -11,10 +11,6 @@ const ProductsFilter = () => {
   const { selectedCategories, setSelectedCategories } =
     useContext(ProductContext);
 
-  // useEffect zostanie uruchomiony tylko raz, ponieważ tablica zależności [] jest pusta,
-  // nie będzie żadnej zmiany, dlatego funkcja nie zostanie wywołana ponownie
-  // żeby uruchamiać funkcję ponownie, należałoby uzupełnić tablicę zależności o zmienne
-  // zawarte wewnątrz hooka useEffect
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -30,9 +26,6 @@ const ProductsFilter = () => {
     loadCategories();
   }, []);
 
-  // ustawienie wybranych kategorii do filtrowania wyników wyświeltania
-  // tablica w storze globalnym dla produktu
-  // przekazana do loadera pobierającego listę z BE
   const handleChange = (e) => {
     const selectedCategoryName = e.target.name;
     if (selectedCategories.includes(selectedCategoryName)) {

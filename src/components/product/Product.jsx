@@ -6,10 +6,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import "../../util/style.css";
 
 const Product = ({ product }) => {
-  // console.log(product);
-  // TODO dodac info jak nie uda sie pobrac danych z backendu
-  // bo teraz jest "cannot read property of undefined"
-  // console.log(product);
   const {
     additionalInformation,
     category,
